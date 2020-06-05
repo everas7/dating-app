@@ -1,7 +1,12 @@
-<div style="text-align: center">
-<h1>
-  Dating App
-</h1>
 
-  <app-value></app-value>
-</div>
+  <app-home *ngIf="!isLoggedIn()"></app-home>
+
+  <div *ngIf="isLoggedIn()">
+    <app-nav></app-nav>
+    <h1>
+      Dating App
+    </h1>
+
+    <app-value></app-value>
+  </div>
+

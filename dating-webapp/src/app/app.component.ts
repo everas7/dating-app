@@ -7,4 +7,10 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'dating-webapp';
+
+
+  isLoggedIn = () => {
+    return !!window.localStorage.getItem('jwt');
+  }
+
 }
