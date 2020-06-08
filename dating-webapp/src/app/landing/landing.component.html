@@ -1,0 +1,3 @@
+
+<app-login *ngIf="!registerMode" (goRegister)="toggleRegister()" ></app-login>
+<app-register *ngIf="registerMode" (closeRegister)="toggleRegister()"></app-register>

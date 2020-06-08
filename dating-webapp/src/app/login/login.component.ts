@@ -1,5 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { AuthService } from '../_services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -9,7 +10,7 @@ import { AuthService } from '../_services/auth.service';
 export class LoginComponent implements OnInit {
   @Output() goRegister = new EventEmitter();
   model: any = {};
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit() {}
 
@@ -20,7 +21,10 @@ export class LoginComponent implements OnInit {
       },
       err => {
         console.log('Login error', err);
-      }
+      },
+      () => {
+        this.router.navigate(['/']);
+      },
     );
   }
 
