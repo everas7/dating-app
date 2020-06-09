@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using Dating.API.Services.Interfaces;
 using DatingApp.API.Data;
 using DatingApp.API.Errors;
 using DatingApp.API.Helpers;
@@ -65,6 +66,10 @@ namespace DatingApp.API
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IUsersRepository, UsersRepository>();
             services.AddScoped<IUsersService, UsersService>();
+            services.AddScoped<IPhotoAccessor, PhotoAccessor>();
+            services.AddScoped<IPhotosRepository, PhotosRepository>();
+            services.AddScoped<IPhotosService, PhotosService>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
