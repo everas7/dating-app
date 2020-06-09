@@ -36,6 +36,13 @@ namespace DatingApp.API.Controllers
             return await _serv.GetAll();
         }
 
+        [HttpGet("self")]
+        public async Task<ActionResult<UserDetailsResponse>> CurrentUser()
+        {
+            var id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            return await _serv.Get(id);
+        }
+
         [HttpGet("{usernameOrId}")]
         public async Task<ActionResult<UserDetailsResponse>> Get(string usernameOrId)
         {

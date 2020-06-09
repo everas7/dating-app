@@ -19,7 +19,18 @@ export class UserService {
     return this.http.get<User>(this.baseUrl.toString() + `/${usernameOrId}`);
   }
 
+  getSelf(): Observable<User> {
+    return this.http.get<User>(this.baseUrl + '/self');
+  }
+
   updateUser(id: number, user: User): Observable<void> {
     return this.http.put<void>(this.baseUrl.toString() + `/${id}`, user);
+  }
+
+  setMain(userId: number, photoId: number): Observable<void> {
+    return this.http.post<void>(
+      this.baseUrl + `/${userId}/photos/${photoId}/setmain`,
+      {}
+    );
   }
 }

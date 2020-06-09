@@ -42,4 +42,8 @@ export class ProfileEditComponent implements OnInit {
       }
     );
   }
+
+  setMainPhoto(url: string) {
+    this.user.photoUrl = url;
+  }
 }

@@ -7,11 +7,17 @@ import { AuthService } from '../_services/auth.service';
   styleUrls: ['./nav.component.css']
 })
 export class NavComponent implements OnInit {
+  photoUrl: string;
   constructor(public authService: AuthService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.authService.currentPhotoUrl.subscribe(
+      photoUrl => (this.photoUrl = photoUrl)
+    );
+  }
 
   logout() {
     localStorage.removeItem('jwt');
+    this.authService.currentUser = null;
   }
 }

@@ -36,5 +36,15 @@ namespace DatingApp.API.Controllers
 
             return CreatedAtRoute("GetPhoto", new { id = photoAdded.Id, userId = userId }, photoAdded);
         }
+
+        [HttpPost("{id}/setmain")]
+        public async Task<ActionResult> SetMain(int userId, int id)
+        {
+            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+                throw new RestException(HttpStatusCode.Forbidden);
+            
+            await _serv.SetMain(userId, id);
+            return NoContent();
+        }
     }
 }

@@ -9,5 +9,6 @@ namespace Dating.API.Services.Interfaces
     {
         Task<PhotoDetailsResponse> Get(int id);
         Task<PhotoCreateResponse> AddUserPhoto(int userId, UserPhotoRequest userPhotoRequest);
+        Task SetMain(int userId, int photoId);
     }
 }

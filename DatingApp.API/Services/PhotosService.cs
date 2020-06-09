@@ -52,5 +52,22 @@ namespace DatingApp.API.Services
 
             return _mapper.Map<PhotoDetailsResponse>(photo);
         }
+
+        public async Task SetMain(int userId, int photoId)
+        {
+            var user = await _usersRepo.Get(userId);
+            var photo = user.Photos.FirstOrDefault(p => p.Id == photoId);
+            if (photo == null)
+                throw new RestException(HttpStatusCode.NotFound, new { Photo = "Not found" });
+
+            if (photo.IsMain)
+                throw new RestException(HttpStatusCode.BadRequest, new { Photo = "Photo is already main" });
+
+            var mainPhoto = user.Photos.FirstOrDefault(p => p.IsMain);
+            mainPhoto.IsMain = false;
+            photo.IsMain = true;
+            await _repo.Update(mainPhoto);
+            await _repo.Update(photo);
+        }
     }
 }

@@ -31,9 +31,11 @@ namespace DatingApp.API.Repositories
             throw new System.NotImplementedException();
         }
 
-        public Task Update(Photo photo)
+        public async Task Update(Photo photo)
         {
-            throw new System.NotImplementedException();
+            _context.Photos.Update(photo);
+            if (!(await _context.SaveChangesAsync() > 0))
+                throw new Exception("Problem saving changes"); 
         }
     }
 }

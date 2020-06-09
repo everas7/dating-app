@@ -12,6 +12,7 @@ using System.Text;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using AutoMapper;
 
 namespace DatingApp.API.Services
 {
@@ -19,8 +20,10 @@ namespace DatingApp.API.Services
     {
         private readonly IAuthRepository _repo;
         private readonly IConfiguration _config;
-        public AuthService(IAuthRepository repo, IConfiguration config)
+        private readonly IMapper _mapper;
+        public AuthService(IAuthRepository repo, IConfiguration config, IMapper mapper)
         {
+            _mapper = mapper;
             _config = config;
             _repo = repo;
         }
