@@ -13,6 +13,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Collections.Generic;
 using AutoMapper;
 using Domain.Users.Responses;
+using Domain.Users.Requests;
 
 namespace DatingApp.API.Services
 {
@@ -61,9 +62,11 @@ namespace DatingApp.API.Services
             return _mapper.Map<List<UserListReponse>>(users);
         }
 
-        public Task Update(User user)
+        public async Task Update(int id, UserUpdateRequest userUpdateRequest)
         {
-            throw new NotImplementedException();
+            var userFromRepo = await _repo.Get(id);
+            _mapper.Map(userUpdateRequest, userFromRepo);
+            await _repo.Update(userFromRepo);
         }
     }
 }

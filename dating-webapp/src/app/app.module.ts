@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-import {FormsModule} from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { NavComponent } from './nav/nav.component';
@@ -10,34 +10,74 @@ import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { TabsModule } from 'ngx-bootstrap/tabs';
+import { ToastrModule } from 'ngx-toastr';
 import { MatchesComponent } from './matches/matches.component';
 import { MessagesComponent } from './messages/messages.component';
 import { LandingComponent } from './landing/landing.component';
 import { RouterModule } from '@angular/router';
 import { appRoutes } from './routes';
+import { UserCardComponent } from './_common/users/user-card/user-card.component';
+import { JwtModule } from '@auth0/angular-jwt';
+import { ProfileDetailComponent } from './profiles/profile-detail/profile-detail.component';
+import { AuthService } from './_services/auth.service';
+import { ErrorInterceptorProvider } from './_services/error.interceptor';
+import { UserService } from './_services/user.service';
+import { ProfileDetailsResolver } from './_resolvers/profile-detail.resolver';
+import { PeopleListResolver } from './_resolvers/people-list.resolver';
+import { NgxGalleryModule } from '@kolkov/ngx-gallery';
+import { ProfileEditComponent } from './profiles/profile-edit/profile-edit.component';
+import { ProfileEditResolver } from './_resolvers/profile-edit.resolver';
+import { PreventUnsavedChanges } from './_guards/prevent-unsaved-changes.guard';
+
+const tokenGetter = () => {
+  return localStorage.getItem('jwt');
+};
 
 @NgModule({
-   declarations: [
-      AppComponent,
-      NavComponent,
-      LoginComponent,
-      HomeComponent,
-      RegisterComponent,
-      MatchesComponent,
-      MessagesComponent,
-      LandingComponent,
-   ],
-   imports: [
-      BrowserModule,
-      HttpClientModule,
-      FormsModule,
-      BrowserAnimationsModule,
-      BsDropdownModule.forRoot(),
-      RouterModule.forRoot(appRoutes),
-   ],
-   providers: [],
-   bootstrap: [
-      AppComponent
-   ]
+  declarations: [
+    AppComponent,
+    NavComponent,
+    LoginComponent,
+    HomeComponent,
+    RegisterComponent,
+    MatchesComponent,
+    MessagesComponent,
+    LandingComponent,
+    UserCardComponent,
+    ProfileDetailComponent,
+    ProfileEditComponent
+  ],
+  imports: [
+    BrowserModule,
+    HttpClientModule,
+    FormsModule,
+    BrowserAnimationsModule,
+    BsDropdownModule.forRoot(),
+    TabsModule.forRoot(),
+    ToastrModule.forRoot({
+      timeOut: 5000,
+      positionClass: 'toast-bottom-right'
+    }),
+    NgxGalleryModule,
+    RouterModule.forRoot(appRoutes),
+    JwtModule.forRoot({
+      config: {
+        tokenGetter,
+        whitelistedDomains: ['localhost:5000'],
+        blacklistedRoutes: ['localhost:5000/api/auth']
+      }
+    })
+  ],
+  providers: [
+    AuthService,
+    ErrorInterceptorProvider,
+    UserService,
+    ProfileDetailsResolver,
+    PeopleListResolver,
+    ProfileEditResolver,
+    PreventUnsavedChanges
+  ],
+  bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

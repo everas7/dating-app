@@ -43,9 +43,13 @@ namespace DatingApp.API.Repositories
             return await _context.Users.Include(u => u.Photos).ToListAsync();
         }
 
-        public Task Update(User user)
+        public async Task Update(User user)
         {
-            throw new NotImplementedException();
+            _context.Update(user);
+            var success = await _context.SaveChangesAsync() > 0;
+
+            if (!success)
+                throw new Exception("Problem saving changes!");
         }
     }
 }

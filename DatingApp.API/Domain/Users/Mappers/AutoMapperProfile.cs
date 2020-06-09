@@ -3,6 +3,7 @@ using AutoMapper;
 using Domain.Users.Responses;
 using System.Linq;
 using Helpers;
+using Domain.Users.Requests;
 
 namespace Domain.Users.Mappers
 {
@@ -21,6 +22,7 @@ namespace Domain.Users.Mappers
                 .ForMember(dest => dest.Age,  opt =>
                     opt.MapFrom(src => src.DateOfBirth.CalculateAge()));
             CreateMap<Photo, UserDetailsPhotoResponse>();
+            CreateMap<UserUpdateRequest, User>();
         }
     }
 }

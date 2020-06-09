@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using DatingApp.API.Data;
 using DatingApp.API.Errors;
+using DatingApp.API.Helpers;
 using DatingApp.API.Repositories;
 using DatingApp.API.Repositories.Interfaces;
 using DatingApp.API.Services;
@@ -58,6 +59,7 @@ namespace DatingApp.API
                     };
                 });
             services.AddCors();
+            services.Configure<CloudinarySettings>(Configuration.GetSection("CloudinarySettings"));
             services.AddAutoMapper(typeof(UsersRepository).Assembly);
             services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddScoped<IAuthService, AuthService>();
