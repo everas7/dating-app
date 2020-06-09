@@ -2,33 +2,35 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { FileUploadModule } from 'ng2-file-upload';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { TabsModule } from 'ngx-bootstrap/tabs';
+import { RouterModule } from '@angular/router';
+import { ToastrModule } from 'ngx-toastr';
+import { NgxGalleryModule } from '@kolkov/ngx-gallery';
+import { JwtModule } from '@auth0/angular-jwt';
 
 import { AppComponent } from './app.component';
 import { NavComponent } from './nav/nav.component';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
-import { TabsModule } from 'ngx-bootstrap/tabs';
-import { ToastrModule } from 'ngx-toastr';
 import { MatchesComponent } from './matches/matches.component';
 import { MessagesComponent } from './messages/messages.component';
 import { LandingComponent } from './landing/landing.component';
-import { RouterModule } from '@angular/router';
 import { appRoutes } from './routes';
 import { UserCardComponent } from './_common/users/user-card/user-card.component';
-import { JwtModule } from '@auth0/angular-jwt';
 import { ProfileDetailComponent } from './profiles/profile-detail/profile-detail.component';
 import { AuthService } from './_services/auth.service';
 import { ErrorInterceptorProvider } from './_services/error.interceptor';
 import { UserService } from './_services/user.service';
 import { ProfileDetailsResolver } from './_resolvers/profile-detail.resolver';
 import { PeopleListResolver } from './_resolvers/people-list.resolver';
-import { NgxGalleryModule } from '@kolkov/ngx-gallery';
 import { ProfileEditComponent } from './profiles/profile-edit/profile-edit.component';
 import { ProfileEditResolver } from './_resolvers/profile-edit.resolver';
 import { PreventUnsavedChanges } from './_guards/prevent-unsaved-changes.guard';
+import { PhotoEditorComponent } from './profiles/photo-editor/photo-editor.component';
 
 const tokenGetter = () => {
   return localStorage.getItem('jwt');
@@ -46,7 +48,8 @@ const tokenGetter = () => {
     LandingComponent,
     UserCardComponent,
     ProfileDetailComponent,
-    ProfileEditComponent
+    ProfileEditComponent,
+    PhotoEditorComponent
   ],
   imports: [
     BrowserModule,
@@ -60,6 +63,7 @@ const tokenGetter = () => {
       positionClass: 'toast-bottom-right'
     }),
     NgxGalleryModule,
+    FileUploadModule,
     RouterModule.forRoot(appRoutes),
     JwtModule.forRoot({
       config: {
