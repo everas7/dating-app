@@ -9,7 +9,7 @@ namespace DatingApp.API.Repositories.Interfaces
         Task<Photo> Get(int id);
         Task Create(Photo photo);
         Task Update(Photo photo);
-        Task Delete(int id);
+        Task Delete(Photo photo);
 
     }
 }

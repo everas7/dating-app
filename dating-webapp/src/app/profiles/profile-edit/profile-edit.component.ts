@@ -36,6 +36,7 @@ export class ProfileEditComponent implements OnInit {
     this.userService.updateUser(this.user.id, this.user).subscribe(
       () => {
         this.editProfileForm.reset(this.user);
+        this.toast.success('Profile info has been updated');
       },
       err => {
         this.toast.error('Error saving changes');

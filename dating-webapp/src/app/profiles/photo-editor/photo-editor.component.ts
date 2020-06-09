@@ -4,6 +4,7 @@ import { FileUploader } from 'ng2-file-upload';
 import { environment } from 'src/environments/environment';
 import { AuthService } from 'src/app/_services/auth.service';
 import { UserService } from 'src/app/_services/user.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-photo-editor',
@@ -18,7 +19,8 @@ export class PhotoEditorComponent implements OnInit {
   hasBaseDropZoneOver = false;
   constructor(
     private authService: AuthService,
-    private userService: UserService
+    private userService: UserService,
+    private toast: ToastrService
   ) {}
 
   ngOnInit() {
@@ -37,6 +39,18 @@ export class PhotoEditorComponent implements OnInit {
         photo.isMain = true;
         this.handleMainPhotoChange.emit(photo.url);
         this.authService.changeProfilePhotoUrl(photo.url);
+      });
+  }
+
+  deletePhoto(photo: Photo) {
+    this.userService
+      .deletePhoto(this.authService.decodedAccessToken.nameid, photo.id)
+      .subscribe(() => {
+        this.photos.splice(
+          this.photos.findIndex(p => p.id === photo.id),
+          1
+        );
+        this.toast.success('Photo has been deleted');
       });
   }
 

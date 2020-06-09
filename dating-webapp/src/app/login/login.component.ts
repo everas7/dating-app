@@ -18,16 +18,13 @@ export class LoginComponent implements OnInit {
     this.authService.login(this.model).subscribe(
       () => {
         console.log('Successfully logged in!');
+        this.router.navigate(['/']);
       },
       err => {
         console.log('Login error', err);
-      },
-      () => {
-        this.router.navigate(['/']);
-      },
+      }
     );
   }
-
 
   register() {
     this.goRegister.emit();

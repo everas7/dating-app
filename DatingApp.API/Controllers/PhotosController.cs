@@ -42,8 +42,18 @@ namespace DatingApp.API.Controllers
         {
             if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
                 throw new RestException(HttpStatusCode.Forbidden);
-            
+
             await _serv.SetMain(userId, id);
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(int userId, int id)
+        {
+            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+                throw new RestException(HttpStatusCode.Forbidden);
+
+            await _serv.Delete(userId, id);
             return NoContent();
         }
     }

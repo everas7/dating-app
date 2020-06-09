@@ -26,16 +26,18 @@ namespace DatingApp.API.Repositories
                 throw new Exception("Problem saving photo");
         }
 
-        public Task Delete(int id)
+        public async Task Delete(Photo photo)
         {
-            throw new System.NotImplementedException();
+            _context.Photos.Remove(photo);
+            if (!(await _context.SaveChangesAsync() > 0))
+                throw new Exception("Problem saving changes");
         }
 
         public async Task Update(Photo photo)
         {
             _context.Photos.Update(photo);
             if (!(await _context.SaveChangesAsync() > 0))
-                throw new Exception("Problem saving changes"); 
+                throw new Exception("Problem saving changes");
         }
     }
 }

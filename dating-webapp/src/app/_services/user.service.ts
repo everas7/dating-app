@@ -33,4 +33,10 @@ export class UserService {
       {}
     );
   }
+
+  deletePhoto(userId: number, photoId: number): Observable<void> {
+    return this.http.delete<void>(
+      this.baseUrl + `/${userId}/photos/${photoId}`
+    );
+  }
 }

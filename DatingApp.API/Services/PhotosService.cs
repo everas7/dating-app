@@ -69,5 +69,18 @@ namespace DatingApp.API.Services
             await _repo.Update(mainPhoto);
             await _repo.Update(photo);
         }
+
+        public async Task Delete(int userId, int photoId)
+        {
+            var user = await _usersRepo.Get(userId);
+            var photo = user.Photos.FirstOrDefault(p => p.Id == photoId);
+            if (photo == null)
+                throw new RestException(HttpStatusCode.NotFound, new { Photo = "Not found" });
+
+            if (photo.IsMain)
+                throw new RestException(HttpStatusCode.BadRequest, new { Photo = "You cannot delete your main photo" });
+
+            await _repo.Delete(photo);
+        }
     }
 }
