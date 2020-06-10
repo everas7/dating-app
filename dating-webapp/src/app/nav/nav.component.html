@@ -19,7 +19,7 @@
       </li>
     </ul>
     <div class="dropdown" dropdown>
-    <span class="mr-1"><img src="{{photoUrl}}" alt=""></span>
+    <span class="mr-1"><img src="{{photoUrl || 'assets/images/user.png'}}" alt=""></span>
       <a class="dropdown-toggle text-light pointer" dropdownToggle>
         Welcome {{ authService.decodedAccessToken.unique_name | titlecase }}
       </a>

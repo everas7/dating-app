@@ -7,6 +7,8 @@ import {
   FormBuilder
 } from '@angular/forms';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker/public_api';
+import { Router } from '@angular/router';
+import { User } from '../_models/user';
 
 @Component({
   selector: 'app-register',
@@ -16,9 +18,10 @@ import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker/public_api';
 export class RegisterComponent implements OnInit {
   @Output() closeRegister = new EventEmitter();
   registerForm: FormGroup;
+  user: User;
   bsConfig: Partial<BsDatepickerConfig>;
 
-  constructor(private authService: AuthService, private fb: FormBuilder) {}
+  constructor(private authService: AuthService, private fb: FormBuilder, private router: Router) {}
 
   ngOnInit() {
     this.bsConfig = {
@@ -64,15 +67,19 @@ export class RegisterComponent implements OnInit {
   }
 
   register() {
-    // this.authService.register(this.model).subscribe(
-    //   () => {
-    //     this.closeRegister.emit();
-    //   },
-    //   err => {
-    //     console.log(err);
-    //   }
-    // );
-    console.log(this.registerForm.value);
+    if (this.registerForm.valid) {
+      this.user = Object.assign({}, this.registerForm.value);
+      this.authService.register(this.registerForm.value).subscribe(
+        () => {
+          this.authService.login(this.user).subscribe(() => {
+            this.router.navigate(['/matches']);
+          });
+        },
+        err => {
+          console.log(err);
+        }
+      );
+    }
   }
 
   cancel() {

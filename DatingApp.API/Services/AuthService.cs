@@ -13,6 +13,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using AutoMapper;
 using Domain.Auth.Responses;
+using Domain.Users.Responses;
 
 namespace DatingApp.API.Services
 {
@@ -61,7 +62,7 @@ namespace DatingApp.API.Services
             };
         }
 
-        public async Task<User> Register(RegisterUserRequest registerUserRequest)
+        public async Task<UserDetailsResponse> Register(RegisterUserRequest registerUserRequest)
         {
             // validate request
             registerUserRequest.Username = registerUserRequest.Username.ToLower();
@@ -69,13 +70,11 @@ namespace DatingApp.API.Services
             if (await _repo.UserExists(registerUserRequest.Username))
                 throw new RestException(HttpStatusCode.BadRequest, new { Username = "Username already exists" });
 
-            var userToCreate = new User
-            {
-                Username = registerUserRequest.Username,
-            };
+            
+            var userToCreate = _mapper.Map<User>(registerUserRequest);
 
             var createdUser = await _repo.Register(userToCreate, registerUserRequest.Password);
-            return createdUser;
+            return _mapper.Map<UserDetailsResponse>(createdUser);
         }
     }
 }

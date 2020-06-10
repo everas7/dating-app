@@ -43,8 +43,8 @@ namespace DatingApp.API.Controllers
             return await _serv.Get(id);
         }
 
-        [HttpGet("{usernameOrId}")]
-        public async Task<ActionResult<UserDetailsResponse>> Get(string usernameOrId)
+        [HttpGet("{usernameOrId}", Name = "GetUser")]
+        public async Task<ActionResult<UserDetailsResponse>> GetUser(string usernameOrId)
         {
             return await _serv.Get(usernameOrId);
         }
@@ -54,7 +54,7 @@ namespace DatingApp.API.Controllers
         {
             if (id != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
                 throw new RestException(HttpStatusCode.Forbidden);
-            
+
             await _serv.Update(id, userUpdateRequest);
             return NoContent();
         }

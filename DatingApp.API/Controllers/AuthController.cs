@@ -26,9 +26,10 @@ namespace DatingApp.API.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult<User>> Register(RegisterUserRequest registerUserRequest)
+        public async Task<ActionResult> Register(RegisterUserRequest registerUserRequest)
         {
-            return await _serv.Register(registerUserRequest);
+            var user = await _serv.Register(registerUserRequest);
+            return CreatedAtRoute("GetUser", new { controller = "Users", usernameOrId = user.Id }, user);
         }
 
         [HttpPost("login")]

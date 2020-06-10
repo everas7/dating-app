@@ -81,6 +81,10 @@ export class PhotoEditorComponent implements OnInit {
         isMain: res.isMain
       };
       this.photos.push(photo);
+      if (photo.isMain) {
+        this.handleMainPhotoChange.emit(photo.url);
+        this.authService.changeProfilePhotoUrl(photo.url);
+      }
     };
   }
 }
