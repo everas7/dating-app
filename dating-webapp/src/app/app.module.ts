@@ -10,6 +10,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { NgxGalleryModule } from '@kolkov/ngx-gallery';
 import { JwtModule } from '@auth0/angular-jwt';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import {TimeagoModule} from 'ngx-timeago';
 
 import { AppComponent } from './app.component';
 import { NavComponent } from './nav/nav.component';
@@ -68,6 +69,7 @@ const tokenGetter = () => {
     NgxGalleryModule,
     FileUploadModule,
     RouterModule.forRoot(appRoutes),
+    TimeagoModule.forRoot(),
     JwtModule.forRoot({
       config: {
         tokenGetter,
