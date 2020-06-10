@@ -5,9 +5,8 @@ using System.Threading.Tasks;
 using DatingApp.API.Data;
 using DatingApp.API.Models;
 using DatingApp.API.Services.Interfaces;
-using Domain.Auth;
-using Domain.Auth.DTOs;
-using Domain.Auth.Payloads;
+using Domain.Auth.Responses;
+using Domain.Auth.Requests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -27,15 +26,15 @@ namespace DatingApp.API.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult<User>> Register(RegisterUserPayload registerUserPayload)
+        public async Task<ActionResult<User>> Register(RegisterUserRequest registerUserRequest)
         {
-            return await _serv.Register(registerUserPayload);
+            return await _serv.Register(registerUserRequest);
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<LoginUserDTO>> Login(LoginUserPayload loginUserPayload)
+        public async Task<ActionResult<LoginUserResponse>> Login(LoginUserRequest loginUserRequest)
         {
-            return await _serv.Login(loginUserPayload);
+            return await _serv.Login(loginUserRequest);
         }
 
     }

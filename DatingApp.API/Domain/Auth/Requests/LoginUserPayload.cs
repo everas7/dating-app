@@ -1,6 +1,6 @@
-namespace Domain.Auth.Payloads
+namespace Domain.Auth.Requests
 {
-  public class LoginUserPayload
+  public class LoginUserRequest
   {
       public string Username { get; set; }
       public string Password { get; set; }

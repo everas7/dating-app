@@ -1,8 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using DatingApp.API.Models;
-using Domain.Auth.DTOs;
-using Domain.Auth.Payloads;
 using Domain.Users.Requests;
 using Domain.Users.Responses;
 using Microsoft.AspNetCore.Mvc;

@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Domain.Auth.Payloads
+namespace Domain.Auth.Requests
 {
-    public class RegisterUserPayload
+    public class RegisterUserRequest
     {
         [Required]
         public string Username { get; set; }

@@ -4,8 +4,7 @@ using DatingApp.API.Errors;
 using DatingApp.API.Services.Interfaces;
 using DatingApp.API.Models;
 using DatingApp.API.Repositories.Interfaces;
-using Domain.Auth.Payloads;
-using Domain.Auth.DTOs;
+using Domain.Auth.Requests;
 using System;
 using System.Security.Claims;
 using System.Text;
@@ -13,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using AutoMapper;
+using Domain.Auth.Responses;
 
 namespace DatingApp.API.Services
 {
@@ -28,9 +28,9 @@ namespace DatingApp.API.Services
             _repo = repo;
         }
 
-        public async Task<LoginUserDTO> Login(LoginUserPayload loginUserPayload)
+        public async Task<LoginUserResponse> Login(LoginUserRequest loginUserRequest)
         {
-            var user = await _repo.Login(loginUserPayload.Username.ToLower(), loginUserPayload.Password);
+            var user = await _repo.Login(loginUserRequest.Username.ToLower(), loginUserRequest.Password);
             if (user == null)
                 throw new RestException(HttpStatusCode.Unauthorized);
 
@@ -53,7 +53,7 @@ namespace DatingApp.API.Services
             var tokenHandler = new JwtSecurityTokenHandler();
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
-            return new LoginUserDTO
+            return new LoginUserResponse
             {
                 Username = user.Username,
                 UserId = user.Id,
@@ -61,20 +61,20 @@ namespace DatingApp.API.Services
             };
         }
 
-        public async Task<User> Register(RegisterUserPayload registerUserPayload)
+        public async Task<User> Register(RegisterUserRequest registerUserRequest)
         {
             // validate request
-            registerUserPayload.Username = registerUserPayload.Username.ToLower();
+            registerUserRequest.Username = registerUserRequest.Username.ToLower();
 
-            if (await _repo.UserExists(registerUserPayload.Username))
+            if (await _repo.UserExists(registerUserRequest.Username))
                 throw new RestException(HttpStatusCode.BadRequest, new { Username = "Username already exists" });
 
             var userToCreate = new User
             {
-                Username = registerUserPayload.Username,
+                Username = registerUserRequest.Username,
             };
 
-            var createdUser = await _repo.Register(userToCreate, registerUserPayload.Password);
+            var createdUser = await _repo.Register(userToCreate, registerUserRequest.Password);
             return createdUser;
         }
     }

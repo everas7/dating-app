@@ -1,6 +1,6 @@
-namespace Domain.Auth.DTOs
+namespace Domain.Auth.Responses
 {
-  public class LoginUserDTO
+  public class LoginUserResponse
   {
       public string Username { get; set; }
       public int UserId { get; set; }
