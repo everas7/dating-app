@@ -69,6 +69,7 @@ namespace DatingApp.API
             services.AddScoped<IPhotoAccessor, PhotoAccessor>();
             services.AddScoped<IPhotosRepository, PhotosRepository>();
             services.AddScoped<IPhotosService, PhotosService>();
+            services.AddScoped<LogUserActivity>();
 
         }
 
@@ -86,7 +87,10 @@ namespace DatingApp.API
 
             app.UseRouting();
 
-            app.UseCors(opt => opt.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200"));
+            app.UseCors(opt => opt.AllowAnyHeader()
+                .AllowAnyMethod()
+                .WithOrigins("http://localhost:4200")
+                .WithExposedHeaders("WWW-Authenticate", "Page", "PerPage", "TotalItems", "TotalPages"));
 
             app.UseAuthentication();
 

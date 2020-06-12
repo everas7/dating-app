@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using DatingApp.API.Helpers;
 using DatingApp.API.Models;
 using Domain.Users.Requests;
 using Domain.Users.Responses;
@@ -10,7 +11,7 @@ namespace DatingApp.API.Services.Interfaces
     public interface IUsersService
     {
         Task<UserDetailsResponse> Get(string usernameOrId);
-        Task<List<UserListReponse>> GetAll();
+        Task<PaginatedResponseEnvelope<UserListReponse>> GetAll(PaginationParams paginationParams);
         Task Create(User user);
         Task Update(int id, UserUpdateRequest user);
         Task Delete(int id);

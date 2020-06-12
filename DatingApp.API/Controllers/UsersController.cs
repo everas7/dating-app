@@ -16,9 +16,12 @@ using Domain.Users.Responses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using DatingApp.API.Helpers;
+using Helpers;
 
 namespace DatingApp.API.Controllers
 {
+    [ServiceFilter(typeof(LogUserActivity))]
     [Route("api/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
@@ -31,9 +34,11 @@ namespace DatingApp.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<UserListReponse>>> Get()
+        public async Task<ActionResult<List<UserListReponse>>> Get([FromQuery] PaginationParams paginationParams)
         {
-            return await _serv.GetAll();
+            var envelope = await _serv.GetAll(paginationParams);
+            Response.AddPaginationHeaders(envelope.PaginationHeaders);
+            return envelope.Response;
         }
 
         [HttpGet("self")]

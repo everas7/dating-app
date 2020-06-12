@@ -5,6 +5,8 @@ using DatingApp.API.Repositories.Interfaces;
 using DatingApp.API.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using DatingApp.API.Helpers;
+using System.Linq;
 
 namespace DatingApp.API.Repositories
 {
@@ -38,9 +40,11 @@ namespace DatingApp.API.Repositories
             .FirstOrDefaultAsync(u => u.Username == username);
         }
 
-        public async Task<List<User>> GetAll()
+        public async Task<PaginatedList<User>> GetAll(PaginationParams paginationParams)
         {
-            return await _context.Users.Include(u => u.Photos).ToListAsync();
+            var users = _context.Users.Include(u => u.Photos).AsQueryable();
+            return await PaginatedList<User>.CreateAsync(users, paginationParams.Page, paginationParams.PerPage);
+
         }
 
         public async Task Update(User user)
