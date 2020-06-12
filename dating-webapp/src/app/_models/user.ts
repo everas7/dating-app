@@ -16,3 +16,9 @@ export interface User {
     lookingFor?: string;
     photos?: Photo[];
 }
+
+export interface UserFilters {
+    gender: string;
+    minAge: number;
+    maxAge: number;
+}

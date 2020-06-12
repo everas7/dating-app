@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using DatingApp.API.Helpers;
 using System.Linq;
+using DatingApp.API.Domain.Users.Requests;
 
 namespace DatingApp.API.Repositories
 {
@@ -40,10 +41,27 @@ namespace DatingApp.API.Repositories
             .FirstOrDefaultAsync(u => u.Username == username);
         }
 
-        public async Task<PaginatedList<User>> GetAll(PaginationParams paginationParams)
+        public async Task<PaginatedList<User>> GetAll(RequestForUserList request)
         {
-            var users = _context.Users.Include(u => u.Photos).AsQueryable();
-            return await PaginatedList<User>.CreateAsync(users, paginationParams.Page, paginationParams.PerPage);
+            var users = _context.Users
+                .Include(u => u.Photos)
+                .AsQueryable();
+
+            users = users.Where(u => u.Id != request.UserId);
+            users = users.Where(u => u.Gender == request.Gender);
+
+            if (request.MinAge > 0)
+            {
+                var maxDOB = DateTime.Now.AddYears(-request.MinAge);
+                users = users.Where(u => u.DateOfBirth <= maxDOB);
+            }
+            if (request.MaxAge > 0)
+            {
+                var minDOB = DateTime.Now.AddYears(-request.MaxAge-1);
+                users = users.Where(u => u.DateOfBirth >= minDOB);
+            }
+
+            return await PaginatedList<User>.CreateAsync(users, request.Page, request.PerPage);
 
         }
 

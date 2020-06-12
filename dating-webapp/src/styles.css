@@ -61,3 +61,13 @@ body {
   border-top: 1px solid #eee;
   padding: 15px 0;
 }
+
+.page-item.active .page-link{
+  color: #fff;
+  background-color: #d9534f ;
+  border-color: #d9534f ;
+}
+
+.page-link, .page-link:hover {
+  color: #d9534f;
+}

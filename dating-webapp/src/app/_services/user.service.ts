@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { User } from '../_models/user';
+import { User, UserFilters } from '../_models/user';
 import { PaginatedResponseEnvelope } from '../_models/pagination';
 import { map } from 'rxjs/operators';
 
@@ -13,17 +13,26 @@ export class UserService {
   baseUrl = environment.apiUrl + '/users';
   constructor(private http: HttpClient) {}
 
-  getUsers(page?, perPage?): Observable<PaginatedResponseEnvelope<User[]>> {
+  getUsers(
+    page?,
+    perPage?,
+    filters?: UserFilters
+  ): Observable<PaginatedResponseEnvelope<User[]>> {
     const paginatedResult: PaginatedResponseEnvelope<User[]> = new PaginatedResponseEnvelope<
       User[]
     >();
+    let params = new HttpParams()
+      .append('page', page)
+      .append('perPage', perPage);
+    if (filters) {
+      params = params.append('gender', filters.gender);
+      params = params.append('minAge', String(filters.minAge));
+      params = params.append('maxAge', String(filters.maxAge));
+    }
     return this.http
       .get<User[]>(this.baseUrl.toString(), {
         observe: 'response',
-        params: {
-          page,
-          perPage
-        }
+        params
       })
       .pipe(
         map(response => {

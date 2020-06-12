@@ -15,6 +15,7 @@ using AutoMapper;
 using Domain.Users.Responses;
 using Domain.Users.Requests;
 using DatingApp.API.Helpers;
+using DatingApp.API.Domain.Users.Requests;
 
 namespace DatingApp.API.Services
 {
@@ -57,9 +58,14 @@ namespace DatingApp.API.Services
             return _mapper.Map<UserDetailsResponse>(user);
         }
 
-        public async Task<PaginatedResponseEnvelope<UserListReponse>> GetAll(PaginationParams paginationParams)
+        public async Task<PaginatedResponseEnvelope<UserListReponse>> GetAll(RequestForUserList request)
         {
-            var users = await _repo.GetAll(paginationParams);
+            if (string.IsNullOrEmpty(request.Gender))
+            {
+                var user = await _repo.Get(request.UserId);
+                request.Gender = user.Gender == "male" ? "female" : "male";
+            }
+            var users = await _repo.GetAll(request);
             var response = _mapper.Map<List<UserListReponse>>(users);
             return new PaginatedResponseEnvelope<UserListReponse>
             {
