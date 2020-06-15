@@ -20,7 +20,7 @@ import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
-import { MatchesComponent } from './matches/matches.component';
+import { PeopleComponent } from './people/people.component';
 import { MessagesComponent } from './messages/messages.component';
 import { LandingComponent } from './landing/landing.component';
 import { appRoutes } from './routes';
@@ -47,7 +47,7 @@ const tokenGetter = () => {
     LoginComponent,
     HomeComponent,
     RegisterComponent,
-    MatchesComponent,
+    PeopleComponent,
     MessagesComponent,
     LandingComponent,
     UserCardComponent,

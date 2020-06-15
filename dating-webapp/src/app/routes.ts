@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
-import { MatchesComponent } from './matches/matches.component';
+import { PeopleComponent } from './people/people.component';
 import { MessagesComponent } from './messages/messages.component';
 import { LandingComponent } from './landing/landing.component';
 import { ProfileDetailComponent } from './profiles/profile-detail/profile-detail.component';
@@ -21,8 +21,8 @@ export const appRoutes: Routes = [
     children: [
       { path: '', component: HomeComponent },
       {
-        path: 'matches',
-        component: MatchesComponent,
+        path: 'people',
+        component: PeopleComponent,
         resolve: { users: PeopleListResolver }
       },
       { path: 'messages', component: MessagesComponent },

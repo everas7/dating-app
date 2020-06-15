@@ -6,11 +6,11 @@ import { Pagination, PaginatedResponseEnvelope } from '../_models/pagination';
 import { AuthService } from '../_services/auth.service';
 
 @Component({
-  selector: 'app-matches',
-  templateUrl: './matches.component.html',
-  styleUrls: ['./matches.component.css']
+  selector: 'app-people',
+  templateUrl: './people.component.html',
+  styleUrls: ['./people.component.css']
 })
-export class MatchesComponent implements OnInit {
+export class PeopleComponent implements OnInit {
   users: User[] = [];
   pagination: Pagination;
   filters: Partial<UserFilters> = {};
