@@ -5,7 +5,7 @@ using System.Linq;
 using Helpers;
 using Domain.Users.Requests;
 
-namespace Domain.Users.Mappers
+namespace DatingApp.API.Domain.Users.Mappers
 {
     public class AutoMapperProfile : Profile
     {
@@ -16,11 +16,13 @@ namespace Domain.Users.Mappers
                     opt.MapFrom(src => src.Photos.FirstOrDefault(p => p.IsMain).Url))
                 .ForMember(dest => dest.Age, opt =>
                     opt.MapFrom(src => src.DateOfBirth.CalculateAge()));
-            CreateMap<User, UserListReponse>()
+            CreateMap<User, UserListResponse>()
                 .ForMember(dest => dest.PhotoUrl, opt =>
                     opt.MapFrom(src => src.Photos.FirstOrDefault(p => p.IsMain).Url))
-                .ForMember(dest => dest.Age,  opt =>
-                    opt.MapFrom(src => src.DateOfBirth.CalculateAge()));
+                .ForMember(dest => dest.Age, opt =>
+                   opt.MapFrom(src => src.DateOfBirth.CalculateAge()))
+                .ForMember(dest => dest.Liked, opt =>
+                    opt.MapFrom<LikedResolver>());
             CreateMap<Photo, UserDetailsPhotoResponse>();
             CreateMap<UserUpdateRequest, User>();
         }

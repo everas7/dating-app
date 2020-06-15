@@ -29,9 +29,11 @@ namespace DatingApp.API.Repositories
                 throw new Exception("Problem saving like!");
         }
 
-        public Task Delete(int likerId, int likeeId)
+        public async Task Delete(Like like)
         {
-            throw new NotImplementedException();
+            _context.Likes.Remove(like);
+            if (!(await _context.SaveChangesAsync() > 0))
+                throw new Exception("Problem saving changes");
         }
         public async Task<Like> Get(int likerId, int likeeId)
         {

@@ -35,7 +35,7 @@ namespace DatingApp.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<UserListReponse>>> Get([FromQuery] RequestForUserList request)
+        public async Task<ActionResult<List<UserListResponse>>> Get([FromQuery] RequestForUserList request)
         {
             var id = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
             request.UserId = id;
@@ -75,8 +75,16 @@ namespace DatingApp.API.Controllers
             return Ok();
         }
 
+        [HttpDelete("{usernameOrId}/like")]
+        public async Task<ActionResult> Dislike(string usernameOrId)
+        {
+            var likerId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            await _serv.DislikeUser(likerId, usernameOrId);
+            return Ok();
+        }
+
         [HttpGet("self/likers")]
-        public async Task<ActionResult<List<UserListReponse>>> GetLikers([FromQuery] RequestForUserList request)
+        public async Task<ActionResult<List<UserListResponse>>> GetLikers([FromQuery] RequestForUserList request)
         {
             var id = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
             request.UserId = id;
@@ -88,7 +96,7 @@ namespace DatingApp.API.Controllers
         }
 
          [HttpGet("self/likees")]
-        public async Task<ActionResult<List<UserListReponse>>> GetLikees([FromQuery] RequestForUserList request)
+        public async Task<ActionResult<List<UserListResponse>>> GetLikees([FromQuery] RequestForUserList request)
         {
             var id = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
             request.UserId = id;

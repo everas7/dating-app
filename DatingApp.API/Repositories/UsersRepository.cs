@@ -46,6 +46,7 @@ namespace DatingApp.API.Repositories
         {
             var users = _context.Users
                 .Include(u => u.Photos)
+                .Include(l => l.Likers)
                 .AsQueryable();
 
             users = users.Where(u => u.Id != request.UserId);

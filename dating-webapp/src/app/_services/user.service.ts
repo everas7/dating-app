@@ -76,4 +76,12 @@ export class UserService {
       this.baseUrl + `/${userId}/photos/${photoId}`
     );
   }
+
+  likeUser(id: number): Observable<void> {
+    return this.http.post<void>(this.baseUrl + `/${id}/like`, {});
+  }
+
+  dislikeUser(id: number): Observable<void> {
+    return this.http.delete<void>(this.baseUrl + `/${id}/like`, {});
+  }
 }

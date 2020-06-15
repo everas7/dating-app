@@ -60,7 +60,7 @@ namespace DatingApp.API.Services
             return _mapper.Map<UserDetailsResponse>(user);
         }
 
-        public async Task<PaginatedResponseEnvelope<UserListReponse>> GetAll(RequestForUserList request)
+        public async Task<PaginatedResponseEnvelope<UserListResponse>> GetAll(RequestForUserList request)
         {
             if (string.IsNullOrEmpty(request.Gender))
             {
@@ -68,8 +68,8 @@ namespace DatingApp.API.Services
                 request.Gender = user.Gender == "male" ? "female" : "male";
             }
             var users = await _repo.GetAll(request);
-            var response = _mapper.Map<List<UserListReponse>>(users);
-            return new PaginatedResponseEnvelope<UserListReponse>
+            var response = _mapper.Map<List<UserListResponse>>(users);
+            return new PaginatedResponseEnvelope<UserListResponse>
             {
                 Response = response,
                 PaginationHeaders = _mapper.Map<PaginationHeaders>(users)
@@ -104,14 +104,36 @@ namespace DatingApp.API.Services
             if (like != null)
                 throw new RestException(HttpStatusCode.BadRequest, new { Like = "You already like this user" });
 
-            
-
             like = new Like
             {
                 LikerId = likerId,
                 LikeeId = likedId,
             };
             await _likesRepo.Create(like);
+        }
+
+         public async Task DislikeUser(int likerId, string likedUsernameOrId)
+        {
+            int likedId = 0;
+            Int32.TryParse(likedUsernameOrId, out likedId);
+            User liked = null;
+            if (likedId > 0)
+            {
+                liked = await _repo.Get(likedId);
+            }
+            if (liked == null)
+            {
+                liked = await _repo.GetByUsername(likedUsernameOrId);
+                likedId = liked.Id;
+            }
+            if (liked == null)
+                throw new RestException(HttpStatusCode.NotFound, new { User = "Not found" });
+
+            var like = await _likesRepo.Get(likerId, likedId);
+            if (like == null)
+                throw new RestException(HttpStatusCode.BadRequest, new { Like = "You do not like this user" });
+
+            await _likesRepo.Delete(like);
         }
     }
 }

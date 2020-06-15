@@ -10,6 +10,6 @@ namespace DatingApp.API.Repositories.Interfaces
     {
         Task<Like> Get(int likerId, int likeeId);
         Task Create(Like like);
-        Task Delete(int likerId, int likeeId);
+        Task Delete(Like like);
     }
 }
