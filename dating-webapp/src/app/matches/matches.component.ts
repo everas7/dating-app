@@ -13,7 +13,7 @@ import { AuthService } from '../_services/auth.service';
 export class MatchesComponent implements OnInit {
   users: User[] = [];
   pagination: Pagination;
-  filters: any = {};
+  filters: Partial<UserFilters> = {};
   genderList = [
     { value: 'female', display: 'Females' },
     { value: 'male', display: 'Males' }
@@ -42,6 +42,8 @@ export class MatchesComponent implements OnInit {
       this.authService.currentUser.gender === 'male' ? 'female' : 'male';
     this.filters.minAge = 18;
     this.filters.maxAge = 99;
+    this.filters.sortBy = 'lastActive';
+    this.filters.sortOrder = 'desc';
   }
 
   resetFilters() {
@@ -51,10 +53,9 @@ export class MatchesComponent implements OnInit {
 
   loadUsers() {
     this.userService
-      .getUsers(this.pagination.page, this.pagination.perPage, this.filters)
+      .getUsers(this.pagination.page, this.pagination.perPage, this.filters as UserFilters)
       .subscribe((pagRespo: PaginatedResponseEnvelope<User[]>) => {
         this.users = pagRespo.response;
-        console.log('anja', pagRespo.pagination);
         this.pagination = pagRespo.pagination;
       });
   }

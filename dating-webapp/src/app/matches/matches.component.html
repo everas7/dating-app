@@ -3,7 +3,12 @@
 </div>
 
 <div class="container mt-5">
-  <form #filtersForm="ngForm" (submit)="loadUsers()" class="form-inline" novalidate>
+  <form
+    #filtersForm="ngForm"
+    (submit)="loadUsers()"
+    class="form-inline"
+    novalidate
+  >
     <div class="form-group">
       <label for="minAge">Age From</label>
       <input
@@ -37,17 +42,47 @@
         name="gender"
         [(ngModel)]="filters.gender"
       >
-        <option [value]="gender.value" *ngFor="let gender of genderList"> 
-          {{gender.display}}
+        <option [value]="gender.value" *ngFor="let gender of genderList">
+          {{ gender.display }}
         </option>
       </select>
     </div>
     <button type="submit" class="btn btn-danger" style="margin-left:10px">
       Apply Filters
     </button>
-    <button (click)="resetFilters()" type="button" class="btn btn-info" style="margin-left:10px">
+    <button
+      (click)="resetFilters()"
+      type="button"
+      class="btn btn-info"
+      style="margin-left:10px"
+    >
       Reset Filter
     </button>
+
+    <div class="col">
+      <div class="btn-group float-right">
+        <button
+          type="button"
+          name="orderBy"
+          (click)="loadUsers()"
+          [(ngModel)]="filters.sortBy"
+          btnRadio="lastActive"
+          class="btn btn-danger"
+        >
+          Last Active
+        </button>
+        <button
+          type="button"
+          name="orderBy"
+          (click)="loadUsers()"
+          [(ngModel)]="filters.sortBy"
+          btnRadio="created"
+          class="btn btn-danger"
+        >
+          Newest Members
+        </button>
+      </div>
+    </div>
   </form>
   <br />
   <div class="row">

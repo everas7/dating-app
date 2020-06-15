@@ -28,6 +28,8 @@ export class UserService {
       params = params.append('gender', filters.gender);
       params = params.append('minAge', String(filters.minAge));
       params = params.append('maxAge', String(filters.maxAge));
+      params = params.append('sortBy', filters.sortBy);
+      params = params.append('sortOrder', filters.sortOrder);
     }
     return this.http
       .get<User[]>(this.baseUrl.toString(), {

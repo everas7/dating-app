@@ -21,4 +21,6 @@ export interface UserFilters {
     gender: string;
     minAge: number;
     maxAge: number;
+    sortBy: string;
+    sortOrder: string;
 }
