@@ -66,5 +66,37 @@ namespace DatingApp.API.Controllers
             await _serv.Update(id, userUpdateRequest);
             return NoContent();
         }
+
+        [HttpPost("{usernameOrId}/like")]
+        public async Task<ActionResult> Like(string usernameOrId)
+        {
+            var likerId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            await _serv.LikeUser(likerId, usernameOrId);
+            return Ok();
+        }
+
+        [HttpGet("self/likers")]
+        public async Task<ActionResult<List<UserListReponse>>> GetLikers([FromQuery] RequestForUserList request)
+        {
+            var id = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            request.UserId = id;
+            request.Likees = false;
+            request.Likers = true;
+            var envelope = await _serv.GetAll(request);
+            Response.AddPaginationHeaders(envelope.PaginationHeaders);
+            return envelope.Response;
+        }
+
+         [HttpGet("self/likees")]
+        public async Task<ActionResult<List<UserListReponse>>> GetLikees([FromQuery] RequestForUserList request)
+        {
+            var id = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            request.UserId = id;
+            request.Likees = true;
+            request.Likers = false;
+            var envelope = await _serv.GetAll(request);
+            Response.AddPaginationHeaders(envelope.PaginationHeaders);
+            return envelope.Response;
+        }
     }
 }

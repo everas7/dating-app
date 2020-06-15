@@ -23,8 +23,10 @@ namespace DatingApp.API.Services
     {
         private readonly IUsersRepository _repo;
         private readonly IMapper _mapper;
-        public UsersService(IUsersRepository repo, IMapper mapper)
+        private readonly ILikesRepository _likesRepo;
+        public UsersService(IUsersRepository repo, IMapper mapper, ILikesRepository likesRepo)
         {
+            _likesRepo = likesRepo;
             _mapper = mapper;
             _repo = repo;
         }
@@ -79,6 +81,37 @@ namespace DatingApp.API.Services
             var userFromRepo = await _repo.Get(id);
             _mapper.Map(userUpdateRequest, userFromRepo);
             await _repo.Update(userFromRepo);
+        }
+
+        public async Task LikeUser(int likerId, string likedUsernameOrId)
+        {
+            int likedId = 0;
+            Int32.TryParse(likedUsernameOrId, out likedId);
+            User liked = null;
+            if (likedId > 0)
+            {
+                liked = await _repo.Get(likedId);
+            }
+            if (liked == null)
+            {
+                liked = await _repo.GetByUsername(likedUsernameOrId);
+                likedId = liked.Id;
+            }
+            if (liked == null)
+                throw new RestException(HttpStatusCode.NotFound, new { User = "Not found" });
+
+            var like = await _likesRepo.Get(likerId, likedId);
+            if (like != null)
+                throw new RestException(HttpStatusCode.BadRequest, new { Like = "You already like this user" });
+
+            
+
+            like = new Like
+            {
+                LikerId = likerId,
+                LikeeId = likedId,
+            };
+            await _likesRepo.Create(like);
         }
     }
 }

@@ -16,6 +16,6 @@ namespace DatingApp.API.Services.Interfaces
         Task Create(User user);
         Task Update(int id, UserUpdateRequest user);
         Task Delete(int id);
-
+        Task LikeUser(int likerId, string likeeUsernameOrId);
     }
 }

@@ -62,6 +62,16 @@ namespace DatingApp.API.Repositories
                 users = users.Where(u => u.DateOfBirth >= minDOB);
             }
 
+            if (request.Likees)
+            {
+                users = users.Where(u => u.Likers.Any(l => l.LikerId == request.UserId));
+            }
+
+            if (request.Likers)
+            {
+                users = users.Where(u => u.Likees.Any(l => l.LikeeId == request.UserId));
+            }
+
             switch (request.SortBy)
             {
                 case UserSortColumns.LastActive:
