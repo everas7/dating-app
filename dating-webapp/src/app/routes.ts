@@ -6,9 +6,11 @@ import { LandingComponent } from './landing/landing.component';
 import { ProfileDetailComponent } from './profiles/profile-detail/profile-detail.component';
 import { ProfileDetailsResolver } from './_resolvers/profile-detail.resolver';
 import { PeopleListResolver } from './_resolvers/people-list.resolver';
+import { MatchesResolver } from './_resolvers/matches.resolver';
 import { ProfileEditComponent } from './profiles/profile-edit/profile-edit.component';
 import { ProfileEditResolver } from './_resolvers/profile-edit.resolver';
 import { PreventUnsavedChanges } from './_guards/prevent-unsaved-changes.guard';
+import { MatchesComponent } from './matches/matches.component';
 
 export const appRoutes: Routes = [
   {
@@ -24,6 +26,11 @@ export const appRoutes: Routes = [
         path: 'people',
         component: PeopleComponent,
         resolve: { users: PeopleListResolver }
+      },
+      {
+        path: 'matches',
+        component: MatchesComponent,
+        resolve: { users: MatchesResolver }
       },
       { path: 'messages', component: MessagesComponent },
       {

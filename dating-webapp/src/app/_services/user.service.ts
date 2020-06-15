@@ -16,6 +16,51 @@ export class UserService {
   getUsers(
     page?,
     perPage?,
+    filters?: UserFilters,
+    likesParam?: string,
+  ): Observable<PaginatedResponseEnvelope<User[]>> {
+    const paginatedResult: PaginatedResponseEnvelope<User[]> = new PaginatedResponseEnvelope<
+      User[]
+    >();
+    let params = new HttpParams()
+      .append('page', page)
+      .append('perPage', perPage);
+    if (filters) {
+      params = params.append('gender', filters.gender);
+      params = params.append('minAge', String(filters.minAge));
+      params = params.append('maxAge', String(filters.maxAge));
+      params = params.append('sortBy', filters.sortBy);
+      params = params.append('sortOrder', filters.sortOrder);
+    }
+
+    if (likesParam) {
+      params = params.append(likesParam, 'true');
+    }
+
+    return this.http
+      .get<User[]>(this.baseUrl.toString(), {
+        observe: 'response',
+        params
+      })
+      .pipe(
+        map(response => {
+          console.log(response.headers);
+          paginatedResult.pagination = {
+            page: +response.headers.get('Page'),
+            perPage: +response.headers.get('PerPage'),
+            totalItems: +response.headers.get('TotalItems'),
+            totalPages: +response.headers.get('TotalPages')
+          };
+
+          paginatedResult.response = response.body;
+          return paginatedResult;
+        })
+      );
+  }
+
+  getMatches(
+    page?,
+    perPage?,
     filters?: UserFilters
   ): Observable<PaginatedResponseEnvelope<User[]>> {
     const paginatedResult: PaginatedResponseEnvelope<User[]> = new PaginatedResponseEnvelope<
@@ -32,7 +77,7 @@ export class UserService {
       params = params.append('sortOrder', filters.sortOrder);
     }
     return this.http
-      .get<User[]>(this.baseUrl.toString(), {
+      .get<User[]>(this.baseUrl + '/self/matches', {
         observe: 'response',
         params
       })

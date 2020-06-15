@@ -12,6 +12,7 @@ namespace DatingApp.API.Domain.Users.Requests
         public int MaxAge { get; set; }
         public bool Likers { get; set; }
         public bool Likees { get; set; }
+        public bool Matches { get; set; }
     }
 
     public enum UserSortColumns

@@ -10,7 +10,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { NgxGalleryModule } from '@kolkov/ngx-gallery';
 import { JwtModule } from '@auth0/angular-jwt';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
-import {TimeagoModule} from 'ngx-timeago';
+import { TimeagoModule } from 'ngx-timeago';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
 
@@ -35,6 +35,8 @@ import { ProfileEditComponent } from './profiles/profile-edit/profile-edit.compo
 import { ProfileEditResolver } from './_resolvers/profile-edit.resolver';
 import { PreventUnsavedChanges } from './_guards/prevent-unsaved-changes.guard';
 import { PhotoEditorComponent } from './profiles/photo-editor/photo-editor.component';
+import { MatchesComponent } from './matches/matches.component';
+import { MatchesResolver } from './_resolvers/matches.resolver';
 
 const tokenGetter = () => {
   return localStorage.getItem('jwt');
@@ -53,7 +55,8 @@ const tokenGetter = () => {
     UserCardComponent,
     ProfileDetailComponent,
     ProfileEditComponent,
-    PhotoEditorComponent
+    PhotoEditorComponent,
+    MatchesComponent
   ],
   imports: [
     BrowserModule,
@@ -89,7 +92,8 @@ const tokenGetter = () => {
     ProfileDetailsResolver,
     PeopleListResolver,
     ProfileEditResolver,
-    PreventUnsavedChanges
+    PreventUnsavedChanges,
+    MatchesResolver
   ],
   bootstrap: [AppComponent]
 })

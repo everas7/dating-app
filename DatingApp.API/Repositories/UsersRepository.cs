@@ -63,6 +63,12 @@ namespace DatingApp.API.Repositories
                 users = users.Where(u => u.DateOfBirth >= minDOB);
             }
 
+            if (request.Matches)
+            {
+                users = users.Where(u => u.Likers.Any(l => l.LikerId == request.UserId) &&
+                    u.Likees.Any(l => l.LikeeId == request.UserId));
+            }
+
             if (request.Likees)
             {
                 users = users.Where(u => u.Likers.Any(l => l.LikerId == request.UserId));

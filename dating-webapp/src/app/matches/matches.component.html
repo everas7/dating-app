@@ -1,0 +1,63 @@
+<div class="text-center mt-3">
+  <h2>
+    {{getHeaderText()}}
+  </h2>
+</div>
+
+<div class="container mt-3">
+  <div class="row">
+    <div class="btn-group">
+      <button
+        class="btn btn-danger"
+        [(ngModel)]="likesParam"
+        btnRadio="Matches"
+        (click)="loadUsers()"
+      >
+        Matches
+      </button>
+      <button
+        class="btn btn-danger"
+        [(ngModel)]="likesParam"
+        btnRadio="Likers"
+        (click)="loadUsers()"
+      >
+        Liked Me
+      </button>
+      <button
+        class="btn btn-danger"
+        [(ngModel)]="likesParam"
+        btnRadio="Likees"
+        (click)="loadUsers()"
+      >
+        I Liked
+      </button>
+    </div>
+  </div>
+
+  <br />
+
+  <div class="row">
+    <div *ngFor="let user of users" class="col-sm-6 col-md-4 col-lg-4 col-xl-2">
+      <app-user-card [user]="user"></app-user-card>
+    </div>
+  </div>
+</div>
+
+<div class="d-flex justify-content-center">
+  <pagination
+    [boundaryLinks]="true"
+    [totalItems]="pagination.totalItems"
+    [itemsPerPage]="pagination.perPage"
+    [(ngModel)]="pagination.page"
+    (pageChanged)="pageChanged($event)"
+    previousText="&lsaquo;"
+    nextText="&rsaquo;"
+    firstText="&laquo;"
+    lastText="&raquo;"
+    *ngIf="pagination.totalItems"
+  >
+  </pagination>
+  <button [routerLink]="['/people']" class="btn btn-danger" *ngIf="!pagination.totalItems">
+    Find People
+  </button>
+</div>

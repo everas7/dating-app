@@ -90,18 +90,33 @@ namespace DatingApp.API.Controllers
             request.UserId = id;
             request.Likees = false;
             request.Likers = true;
+            request.Matches = false;
             var envelope = await _serv.GetAll(request);
             Response.AddPaginationHeaders(envelope.PaginationHeaders);
             return envelope.Response;
         }
 
-         [HttpGet("self/likees")]
+        [HttpGet("self/likees")]
         public async Task<ActionResult<List<UserListResponse>>> GetLikees([FromQuery] RequestForUserList request)
         {
             var id = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
             request.UserId = id;
             request.Likees = true;
             request.Likers = false;
+            request.Matches = false;
+            var envelope = await _serv.GetAll(request);
+            Response.AddPaginationHeaders(envelope.PaginationHeaders);
+            return envelope.Response;
+        }
+
+        [HttpGet("self/matches")]
+        public async Task<ActionResult<List<UserListResponse>>> GetMatches([FromQuery] RequestForUserList request)
+        {
+            var id = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            request.UserId = id;
+            request.Likees = false;
+            request.Likers = false;
+            request.Matches = true;
             var envelope = await _serv.GetAll(request);
             Response.AddPaginationHeaders(envelope.PaginationHeaders);
             return envelope.Response;
