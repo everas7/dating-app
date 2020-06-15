@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using DatingApp.API.Helpers;
 using System.Linq;
 using DatingApp.API.Domain.Users.Requests;
+using Helpers;
 
 namespace DatingApp.API.Repositories
 {
@@ -57,10 +58,19 @@ namespace DatingApp.API.Repositories
             }
             if (request.MaxAge > 0)
             {
-                var minDOB = DateTime.Now.AddYears(-request.MaxAge-1);
+                var minDOB = DateTime.Now.AddYears(-request.MaxAge - 1);
                 users = users.Where(u => u.DateOfBirth >= minDOB);
             }
 
+            switch (request.SortBy)
+            {
+                case UserSortColumns.LastActive:
+                    users = users.CustomOrderBy(u => u.LastActive, request.SortOrder);
+                    break;
+                default:
+                    users = users.CustomOrderBy(u => u.Created, request.SortOrder);
+                    break;
+            }
             return await PaginatedList<User>.CreateAsync(users, request.Page, request.PerPage);
 
         }

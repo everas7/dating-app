@@ -1,4 +1,6 @@
 using System;
+using System.Linq;
+using System.Linq.Expressions;
 using DatingApp.API.Helpers;
 using Microsoft.AspNetCore.Http;
 
@@ -21,6 +23,16 @@ namespace Helpers
                 age--;
 
             return age;
+        }
+
+
+        public static IOrderedQueryable<TSource> CustomOrderBy<TSource, TKey>(this IQueryable<TSource> source, Expression<Func<TSource, TKey>> keySelector, SortOrder order)
+        {
+            if (order == SortOrder.Asc)
+            {
+                return source.OrderBy(keySelector);
+            }
+            return source.OrderByDescending(keySelector);
         }
     }
 }

@@ -1,14 +1,13 @@
 namespace DatingApp.API.Helpers
 {
-    public class PaginationParams
+    public interface IPaginationParams
     {
-        private const int MaxPerPage = 50;
-        public int Page { get; set; } = 1;
-        private int perPage = 10;
-        public int PerPage
+        int MaxPerPage { get;}
+        int Page { get; set; }
+        int PerPage
         {
-            get { return perPage; }
-            set { perPage = (value <= MaxPerPage) ? value : MaxPerPage; }
+            get;
+            set;
         }
     }
 }
