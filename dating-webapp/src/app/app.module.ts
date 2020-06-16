@@ -97,7 +97,7 @@ const tokenGetter = () => {
     ProfileEditResolver,
     PreventUnsavedChanges,
     MatchesResolver,
-    MessagesResolver,
+    MessagesResolver
   ],
   bootstrap: [AppComponent]
 })

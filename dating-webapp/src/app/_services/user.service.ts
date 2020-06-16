@@ -164,4 +164,12 @@ export class UserService {
       this.baseUrl + `/${id}/messages/thread/${recipientId}`
     );
   }
+
+  sendMessage(id: number, message: Message) {
+    return this.http.post<Message>(this.baseUrl + `/${id}/messages`, message);
+  }
+
+  deleteMessage(id: number, userId: number) {
+    return this.http.delete(this.baseUrl + `/${userId}/messages/${id}`);
+  }
 }

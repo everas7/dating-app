@@ -46,7 +46,7 @@ namespace DatingApp.API.Controllers
         }
 
         [HttpGet("{id}", Name = "GetMessage")]
-        public async Task<ActionResult<MessageDetailsResponse>> GetUser(int id)
+        public async Task<ActionResult<MessageDetailsResponse>> Get(int id)
         {
             return await _serv.Get(id);
         }
@@ -55,13 +55,20 @@ namespace DatingApp.API.Controllers
         public async Task<ActionResult> Create(int userId, MessageCreationRequest request)
         {
             var message = await _serv.Create(userId, request);
-            return CreatedAtRoute("GetMessage", new {userId, id = message.Id}, message);
+            return CreatedAtRoute("GetMessage", new { userId, id = message.Id }, message);
         }
 
         [HttpGet("thread/{recipientId}")]
         public async Task<ActionResult<List<MessageListResponse>>> GetMessageThread(int userId, int recipientId)
         {
             return await _serv.GetMessageThread(userId, recipientId);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            await _serv.Delete(id);
+            return NoContent();
         }
     }
 }

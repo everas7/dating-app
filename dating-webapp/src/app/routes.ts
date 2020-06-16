@@ -12,15 +12,16 @@ import { ProfileEditResolver } from './_resolvers/profile-edit.resolver';
 import { PreventUnsavedChanges } from './_guards/prevent-unsaved-changes.guard';
 import { MatchesComponent } from './matches/matches.component';
 import { MessagesResolver } from './_resolvers/messages.resolver';
+import { AuthGuard } from './_guards/auth.guard';
 
 export const appRoutes: Routes = [
   {
-    path: '',
-    component: LandingComponent,
-    outlet: 'publicOutlet'
+    path: 'landing',
+    component: LandingComponent
   },
   {
     path: '',
+    canActivate: [AuthGuard],
     children: [
       {
         path: 'people',
@@ -55,5 +56,9 @@ export const appRoutes: Routes = [
       }
     ]
   },
-  { path: '**', redirectTo: '', pathMatch: 'full' }
+  {
+    path: '**',
+    redirectTo: '',
+    pathMatch: 'full'
+  }
 ];

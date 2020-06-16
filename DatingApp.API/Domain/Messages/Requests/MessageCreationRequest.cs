@@ -10,7 +10,7 @@ namespace DatingApp.API.Domain.Messages.Requests
         public string Content { get; set; }
         public MessageCreationRequest()
         {
-            MessageSent = DateTime.Now;
+            MessageSent = TimeZoneInfo.ConvertTimeToUtc(DateTime.Now);
         }
     }
 }

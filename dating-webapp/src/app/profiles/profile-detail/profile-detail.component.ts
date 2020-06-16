@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { UserService } from 'src/app/_services/user.service';
 import { ActivatedRoute } from '@angular/router';
 import { User } from 'src/app/_models/user';
@@ -7,6 +7,7 @@ import {
   NgxGalleryImage,
   NgxGalleryAnimation
 } from '@kolkov/ngx-gallery';
+import { TabsetComponent } from 'ngx-bootstrap/tabs/public_api';
 
 @Component({
   selector: 'app-profile-detail',
@@ -14,18 +15,20 @@ import {
   styleUrls: ['./profile-detail.component.css']
 })
 export class ProfileDetailComponent implements OnInit {
+  @ViewChild('profileTabs', { static: true }) profileTabs: TabsetComponent;
   user: User;
   galleryOptions: NgxGalleryOptions[];
   galleryImages: NgxGalleryImage[];
   constructor(
     private userService: UserService,
-    private router: ActivatedRoute
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
-    this.router.data.subscribe(data => {
+    this.route.data.subscribe(data => {
       this.user = data.user;
     });
+
     this.galleryOptions = [
       {
         width: '500px',
@@ -37,6 +40,10 @@ export class ProfileDetailComponent implements OnInit {
       }
     ];
     this.galleryImages = this.getImages();
+    this.route.queryParams.subscribe(params => {
+      const selectedTab = params.tab;
+      this.profileTabs.tabs[selectedTab || 0].active = true;
+    });
   }
 
   getImages() {
@@ -50,5 +57,9 @@ export class ProfileDetailComponent implements OnInit {
       });
     }
     return imageUrls;
+  }
+
+  selectTab(tabId: number) {
+    this.profileTabs.tabs[tabId].active = true;
   }
 }

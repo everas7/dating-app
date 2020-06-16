@@ -46,13 +46,10 @@ namespace DatingApp.API.Services
                 throw new RestException(HttpStatusCode.NotFound, new { Recipient = "Not found" });
 
             var message = _mapper.Map<Message>(request);
+            var sender = await _usersRepo.Get(request.SenderId);
+            message.Sender = sender;
             await _repo.Create(message);
             return _mapper.Map<MessageDetailsResponse>(message);
-        }
-
-        public Task Delete(int id)
-        {
-            throw new NotImplementedException();
         }
 
         public async Task<MessageDetailsResponse> Get(int id)
@@ -89,6 +86,26 @@ namespace DatingApp.API.Services
 
             var messages = await _repo.GetMessageThread(userId, recipientId);
             return _mapper.Map<List<MessageListResponse>>(messages);
+        }
+
+        public async Task Delete(int id)
+        {
+            var message = await _repo.Get(id);
+            if (message == null)
+                throw new RestException(HttpStatusCode.NotFound, new { Message = "Not found" });
+            var currentUserId = _userAccessor.getCurrentUserId();
+
+            if (message.RecipientId != currentUserId && message.SenderId != currentUserId)
+                throw new RestException(HttpStatusCode.Forbidden);
+
+            if (message.RecipientId == currentUserId)
+                message.RecipientDeleted = true;
+
+            if (message.SenderId == currentUserId)
+                message.SenderDeleted = true;
+
+            if (message.RecipientDeleted && message.SenderDeleted)
+                await _repo.Delete(message);
         }
     }
 }

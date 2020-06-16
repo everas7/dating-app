@@ -20,6 +20,6 @@ export class NavComponent implements OnInit {
   logout() {
     localStorage.removeItem('jwt');
     this.authService.currentUser = null;
-    this.router.navigate(['/']);
+    this.router.navigate(['/landing']);
   }
 }
