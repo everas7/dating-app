@@ -37,6 +37,14 @@ namespace DatingApp.API.Repositories
                 throw new Exception("Problem saving changes");
         }
 
+        public async Task Update(Message message)
+        {
+            _context.Messages.Update(message);
+            if (!(await _context.SaveChangesAsync() > 0))
+                throw new Exception("Problem saving changes");
+        }
+
+
         public async Task<Message> Get(int id)
         {
             return await _context.Messages.FindAsync(id);

@@ -13,6 +13,7 @@ namespace DatingApp.API.Repositories.Interfaces
         Task<PaginatedList<Message>> GetMessagesForUser(MessageListRequest request);
         Task<List<Message>> GetMessageThread(int userId, int recipientId);
         Task Create(Message message);
+        Task Update(Message message);
         Task Delete(Message message);
     }
 }

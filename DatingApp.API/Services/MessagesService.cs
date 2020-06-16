@@ -52,12 +52,16 @@ namespace DatingApp.API.Services
             return _mapper.Map<MessageDetailsResponse>(message);
         }
 
-        public async Task<MessageDetailsResponse> Get(int id)
+        public async Task<MessageDetailsResponse> Get(int userId, int id)
         {
             var message = await _repo.Get(id);
             if (message == null)
                 throw new RestException(HttpStatusCode.NotFound, new { Message = "Not found" });
             var currentUserId = _userAccessor.getCurrentUserId();
+
+            if (userId != currentUserId)
+                throw new RestException(HttpStatusCode.Forbidden);
+
 
             if (message.RecipientId != currentUserId && message.SenderId != currentUserId)
                 throw new RestException(HttpStatusCode.Forbidden);
@@ -88,12 +92,15 @@ namespace DatingApp.API.Services
             return _mapper.Map<List<MessageListResponse>>(messages);
         }
 
-        public async Task Delete(int id)
+        public async Task Delete(int userId, int id)
         {
             var message = await _repo.Get(id);
             if (message == null)
                 throw new RestException(HttpStatusCode.NotFound, new { Message = "Not found" });
             var currentUserId = _userAccessor.getCurrentUserId();
+
+            if (userId != currentUserId)
+                throw new RestException(HttpStatusCode.Forbidden);
 
             if (message.RecipientId != currentUserId && message.SenderId != currentUserId)
                 throw new RestException(HttpStatusCode.Forbidden);
@@ -106,6 +113,25 @@ namespace DatingApp.API.Services
 
             if (message.RecipientDeleted && message.SenderDeleted)
                 await _repo.Delete(message);
+        }
+
+        public async Task MarkAsRead(int userId, int id)
+        {
+            var message = await _repo.Get(id);
+            if (message == null)
+                throw new RestException(HttpStatusCode.NotFound, new { Message = "Not found" });
+            var currentUserId = _userAccessor.getCurrentUserId();
+
+            if (userId != currentUserId)
+                throw new RestException(HttpStatusCode.Forbidden);
+
+            if (message.RecipientId != currentUserId)
+                throw new RestException(HttpStatusCode.Forbidden);
+
+            message.IsRead = true;
+            message.DateRead = TimeZoneInfo.ConvertTimeToUtc(DateTime.Now);
+
+            await _repo.Update(message);
         }
     }
 }

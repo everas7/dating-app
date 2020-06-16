@@ -172,4 +172,8 @@ export class UserService {
   deleteMessage(id: number, userId: number) {
     return this.http.delete(this.baseUrl + `/${userId}/messages/${id}`);
   }
+
+  markMessageAsRead(id: number, userId: number) {
+    return this.http.post(this.baseUrl + `/${userId}/messages/${id}/read`, {}).subscribe();
+  }
 }

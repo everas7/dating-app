@@ -10,6 +10,7 @@ import { Message } from 'src/app/_models/message';
 import { UserService } from 'src/app/_services/user.service';
 import { AuthService } from 'src/app/_services/auth.service';
 import { ToastrService } from 'ngx-toastr';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-profile-messages',
@@ -38,8 +39,18 @@ export class ProfileMessagesComponent implements OnInit, AfterViewChecked {
   }
 
   loadMessages() {
+    const currentUserId = +this.authService.decodedAccessToken.nameid;
     this.userService
       .getMessageThread(this.authService.currentUser.id, this.recipientId)
+      .pipe(
+        tap(messages => {
+          messages.forEach(message => {
+            if (!message.isRead && message.recipientId === currentUserId) {
+              this.userService.markMessageAsRead(message.id, currentUserId);
+            }
+          });
+        })
+      )
       .subscribe(
         messages => {
           this.messages = messages;

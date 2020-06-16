@@ -46,9 +46,9 @@ namespace DatingApp.API.Controllers
         }
 
         [HttpGet("{id}", Name = "GetMessage")]
-        public async Task<ActionResult<MessageDetailsResponse>> Get(int id)
+        public async Task<ActionResult<MessageDetailsResponse>> Get(int userId, int id)
         {
-            return await _serv.Get(id);
+            return await _serv.Get(userId, id);
         }
 
         [HttpPost]
@@ -65,9 +65,16 @@ namespace DatingApp.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(int id)
+        public async Task<ActionResult> Delete(int userId, int id)
         {
-            await _serv.Delete(id);
+            await _serv.Delete(userId, id);
+            return NoContent();
+        }
+
+        [HttpPost("{id}/read")]
+        public async Task<ActionResult> MarkAsRead(int userId, int id)
+        {
+            await _serv.MarkAsRead(userId, id);
             return NoContent();
         }
     }
