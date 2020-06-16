@@ -36,15 +36,14 @@ namespace DatingApp.API.Controllers
             _serv = serv;
         }
 
-        // [HttpGet]
-        // public async Task<ActionResult<List<UserListResponse>>> Get([FromQuery] RequestForUserList request)
-        // {
-        //     var id = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-        //     request.UserId = id;
-        //     var envelope = await _serv.GetAll(request);
-        //     Response.AddPaginationHeaders(envelope.PaginationHeaders);
-        //     return envelope.Response;
-        // }
+        [HttpGet]
+        public async Task<ActionResult<List<MessageListResponse>>> GetMessagesForUser(int userId, [FromQuery] MessageListRequest request)
+        {
+            request.UserId = userId;
+            var envelope = await _serv.GetMessagesForUser(request);
+            Response.AddPaginationHeaders(envelope.PaginationHeaders);
+            return envelope.Response;
+        }
 
         [HttpGet("{id}", Name = "GetMessage")]
         public async Task<ActionResult<MessageDetailsResponse>> GetUser(int id)
@@ -59,12 +58,10 @@ namespace DatingApp.API.Controllers
             return CreatedAtRoute("GetMessage", new {userId, id = message.Id}, message);
         }
 
-        // [HttpDelete("{usernameOrId}/like")]
-        // public async Task<ActionResult> Dislike(string usernameOrId)
-        // {
-        //     var likerId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-        //     await _serv.DislikeUser(likerId, usernameOrId);
-        //     return Ok();
-        // }
+        [HttpGet("thread/{recipientId}")]
+        public async Task<ActionResult<List<MessageListResponse>>> GetMessageThread(int userId, int recipientId)
+        {
+            return await _serv.GetMessageThread(userId, recipientId);
+        }
     }
 }

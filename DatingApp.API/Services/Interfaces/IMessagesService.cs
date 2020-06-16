@@ -13,6 +13,8 @@ namespace DatingApp.API.Services.Interfaces
 {
     public interface IMessagesService
     {
+        Task<PaginatedResponseEnvelope<MessageListResponse>> GetMessagesForUser(MessageListRequest request);
+        Task<List<MessageListResponse>> GetMessageThread(int userId, int recipientId);
         Task<MessageDetailsResponse> Get(int id);
         Task<MessageDetailsResponse> Create(int userId, MessageCreationRequest request);
         Task Delete(int id);

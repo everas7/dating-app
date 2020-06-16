@@ -44,7 +44,7 @@ namespace DatingApp.API.Services
             var recipient = await _usersRepo.Get(request.RecipientId);
             if (recipient == null)
                 throw new RestException(HttpStatusCode.NotFound, new { Recipient = "Not found" });
-            
+
             var message = _mapper.Map<Message>(request);
             await _repo.Create(message);
             return _mapper.Map<MessageDetailsResponse>(message);
@@ -68,73 +68,27 @@ namespace DatingApp.API.Services
             return _mapper.Map<MessageDetailsResponse>(message);
         }
 
-        // public async Task<PaginatedResponseEnvelope<UserListResponse>> GetAll(RequestForUserList request)
-        // {
-        //     if (string.IsNullOrEmpty(request.Gender))
-        //     {
-        //         var user = await _repo.Get(request.UserId);
-        //         request.Gender = user.Gender == "male" ? "female" : "male";
-        //     }
-        //     var users = await _repo.GetAll(request);
-        //     var response = _mapper.Map<List<UserListResponse>>(users);
-        //     return new PaginatedResponseEnvelope<UserListResponse>
-        //     {
-        //         Response = response,
-        //         PaginationHeaders = _mapper.Map<PaginationHeaders>(users)
-        //     };
-        // }
+        public async Task<PaginatedResponseEnvelope<MessageListResponse>> GetMessagesForUser(MessageListRequest request)
+        {
+            if (request.UserId != _userAccessor.getCurrentUserId())
+                throw new RestException(HttpStatusCode.Forbidden);
 
-        // public async Task LikeUser(int likerId, string likedUsernameOrId)
-        // {
-        //     int likedId = 0;
-        //     Int32.TryParse(likedUsernameOrId, out likedId);
-        //     User liked = null;
-        //     if (likedId > 0)
-        //     {
-        //         liked = await _repo.Get(likedId);
-        //     }
-        //     if (liked == null)
-        //     {
-        //         liked = await _repo.GetByUsername(likedUsernameOrId);
-        //         likedId = liked.Id;
-        //     }
-        //     if (liked == null)
-        //         throw new RestException(HttpStatusCode.NotFound, new { User = "Not found" });
+            var messages = await _repo.GetMessagesForUser(request);
+            var response = _mapper.Map<List<MessageListResponse>>(messages);
+            return new PaginatedResponseEnvelope<MessageListResponse>
+            {
+                Response = response,
+                PaginationHeaders = _mapper.Map<PaginationHeaders>(messages)
+            };
+        }
 
-        //     var like = await _likesRepo.Get(likerId, likedId);
-        //     if (like != null)
-        //         throw new RestException(HttpStatusCode.BadRequest, new { Like = "You already like this user" });
+        public async Task<List<MessageListResponse>> GetMessageThread(int userId, int recipientId)
+        {
+            if (userId != _userAccessor.getCurrentUserId())
+                throw new RestException(HttpStatusCode.Forbidden);
 
-        //     like = new Like
-        //     {
-        //         LikerId = likerId,
-        //         LikeeId = likedId,
-        //     };
-        //     await _likesRepo.Create(like);
-        // }
-
-        //  public async Task DislikeUser(int likerId, string likedUsernameOrId)
-        // {
-        //     int likedId = 0;
-        //     Int32.TryParse(likedUsernameOrId, out likedId);
-        //     User liked = null;
-        //     if (likedId > 0)
-        //     {
-        //         liked = await _repo.Get(likedId);
-        //     }
-        //     if (liked == null)
-        //     {
-        //         liked = await _repo.GetByUsername(likedUsernameOrId);
-        //         likedId = liked.Id;
-        //     }
-        //     if (liked == null)
-        //         throw new RestException(HttpStatusCode.NotFound, new { User = "Not found" });
-
-        //     var like = await _likesRepo.Get(likerId, likedId);
-        //     if (like == null)
-        //         throw new RestException(HttpStatusCode.BadRequest, new { Like = "You do not like this user" });
-
-        //     await _likesRepo.Delete(like);
-        // }
+            var messages = await _repo.GetMessageThread(userId, recipientId);
+            return _mapper.Map<List<MessageListResponse>>(messages);
+        }
     }
 }
