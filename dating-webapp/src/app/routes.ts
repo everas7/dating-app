@@ -21,7 +21,6 @@ export const appRoutes: Routes = [
   {
     path: '',
     children: [
-      { path: '', component: HomeComponent },
       {
         path: 'people',
         component: PeopleComponent,
@@ -37,12 +36,17 @@ export const appRoutes: Routes = [
         path: 'profile/edit',
         component: ProfileEditComponent,
         resolve: { user: ProfileEditResolver },
-        canDeactivate:[PreventUnsavedChanges]
+        canDeactivate: [PreventUnsavedChanges]
       },
       {
         path: 'profile/:username',
         component: ProfileDetailComponent,
         resolve: { user: ProfileDetailsResolver }
+      },
+      {
+        path: '',
+        redirectTo: 'people',
+        pathMatch: 'full'
       }
     ]
   },
