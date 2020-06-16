@@ -13,13 +13,13 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { TimeagoModule } from 'ngx-timeago';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 
 import { AppComponent } from './app.component';
 import { NavComponent } from './nav/nav.component';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
-import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { PeopleComponent } from './people/people.component';
 import { MessagesComponent } from './messages/messages.component';
 import { LandingComponent } from './landing/landing.component';
@@ -38,6 +38,7 @@ import { PhotoEditorComponent } from './profiles/photo-editor/photo-editor.compo
 import { MatchesComponent } from './matches/matches.component';
 import { MatchesResolver } from './_resolvers/matches.resolver';
 import { MessagesResolver } from './_resolvers/messages.resolver';
+import { ProfileMessagesComponent } from './profiles/profile-messages/profile-messages.component';
 
 const tokenGetter = () => {
   return localStorage.getItem('jwt');
@@ -57,7 +58,8 @@ const tokenGetter = () => {
     ProfileDetailComponent,
     ProfileEditComponent,
     PhotoEditorComponent,
-    MatchesComponent
+    MatchesComponent,
+    ProfileMessagesComponent
   ],
   imports: [
     BrowserModule,
