@@ -37,6 +37,7 @@ import { PreventUnsavedChanges } from './_guards/prevent-unsaved-changes.guard';
 import { PhotoEditorComponent } from './profiles/photo-editor/photo-editor.component';
 import { MatchesComponent } from './matches/matches.component';
 import { MatchesResolver } from './_resolvers/matches.resolver';
+import { MessagesResolver } from './_resolvers/messages.resolver';
 
 const tokenGetter = () => {
   return localStorage.getItem('jwt');
@@ -93,7 +94,8 @@ const tokenGetter = () => {
     PeopleListResolver,
     ProfileEditResolver,
     PreventUnsavedChanges,
-    MatchesResolver
+    MatchesResolver,
+    MessagesResolver,
   ],
   bootstrap: [AppComponent]
 })

@@ -11,6 +11,7 @@ import { ProfileEditComponent } from './profiles/profile-edit/profile-edit.compo
 import { ProfileEditResolver } from './_resolvers/profile-edit.resolver';
 import { PreventUnsavedChanges } from './_guards/prevent-unsaved-changes.guard';
 import { MatchesComponent } from './matches/matches.component';
+import { MessagesResolver } from './_resolvers/messages.resolver';
 
 export const appRoutes: Routes = [
   {
@@ -31,7 +32,11 @@ export const appRoutes: Routes = [
         component: MatchesComponent,
         resolve: { users: MatchesResolver }
       },
-      { path: 'messages', component: MessagesComponent },
+      {
+        path: 'messages',
+        component: MessagesComponent,
+        resolve: { messages: MessagesResolver }
+      },
       {
         path: 'profile/edit',
         component: ProfileEditComponent,

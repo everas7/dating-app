@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { User, UserFilters } from '../_models/user';
 import { PaginatedResponseEnvelope } from '../_models/pagination';
 import { map } from 'rxjs/operators';
+import { Message } from '../_models/message';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,7 @@ export class UserService {
     page?,
     perPage?,
     filters?: UserFilters,
-    likesParam?: string,
+    likesParam?: string
   ): Observable<PaginatedResponseEnvelope<User[]>> {
     const paginatedResult: PaginatedResponseEnvelope<User[]> = new PaginatedResponseEnvelope<
       User[]
@@ -83,7 +84,6 @@ export class UserService {
       })
       .pipe(
         map(response => {
-          console.log(response.headers);
           paginatedResult.pagination = {
             page: +response.headers.get('Page'),
             perPage: +response.headers.get('PerPage'),
@@ -128,5 +128,34 @@ export class UserService {
 
   dislikeUser(id: number): Observable<void> {
     return this.http.delete<void>(this.baseUrl + `/${id}/like`, {});
+  }
+
+  getMessages(id: number, page?, perPage?, messageContainer?) {
+    const paginatedResponse: PaginatedResponseEnvelope<Message[]> = new PaginatedResponseEnvelope<
+      Message[]
+    >();
+    let params = new HttpParams();
+    params = params.append('MessageContainer', messageContainer);
+    if (page != null && perPage != null) {
+      params = params.append('page', page).append('perPage', perPage);
+    }
+    return this.http
+      .get<Message[]>(this.baseUrl + `/${id}/messages`, {
+        observe: 'response',
+        params
+      })
+      .pipe(
+        map(response => {
+          paginatedResponse.pagination = {
+            page: +response.headers.get('Page'),
+            perPage: +response.headers.get('PerPage'),
+            totalItems: +response.headers.get('TotalItems'),
+            totalPages: +response.headers.get('TotalPages')
+          };
+
+          paginatedResponse.response = response.body;
+          return paginatedResponse;
+        })
+      );
   }
 }
