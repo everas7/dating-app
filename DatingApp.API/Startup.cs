@@ -71,6 +71,8 @@ namespace DatingApp.API
             services.AddScoped<IPhotosRepository, PhotosRepository>();
             services.AddScoped<IPhotosService, PhotosService>();
             services.AddScoped<ILikesRepository, LikesRepository>();
+            services.AddScoped<IMessagesRepository, MessagesRepository>();
+            services.AddScoped<IMessagesService, MessagesService>();
             services.AddScoped<LogUserActivity>();
             services.AddHttpContextAccessor();
             services.AddScoped<IUserAccessor, UserAccessor>();
